@@ -1,0 +1,957 @@
+---
+API: 2.1
+OpenSesame: 3.2.8
+Platform: posix
+---
+set width 1024
+set uniform_coordinates yes
+set title "Simon Effect Task"
+set subject_parity even
+set subject_nr 0
+set start experiment
+set sound_sample_size -16
+set sound_freq 48000
+set sound_channels 2
+set sound_buf_size 1024
+set sampler_backend legacy
+set round_decimals 2
+set mouse_backend xpyriment
+set keyboard_backend legacy
+set height 768
+set fullscreen no
+set form_clicks no
+set foreground black
+set font_underline no
+set font_size 24
+set font_italic no
+set font_family "chinese-japanese-korean"
+set font_bold no
+set experiment_path "/Users/majima/OneDrive - hokusei.ac.jp/Class/ゼミ/OpenSesame sample"
+set disable_garbage_collection yes
+set description "Default description"
+set coordinates uniform
+set compensation 0
+set color_backend legacy
+set clock_backend legacy
+set canvas_backend xpyriment
+set bidi no
+set background white
+
+define sketchpad blank
+	set duration 1000
+	set description "Displays stimuli"
+
+define sequence demographic
+	set flush_keyboard yes
+	set description アイテムをシーケンスで実行
+	run gender_q always
+	run gender always
+	run set_gender always
+	run handedness_q always
+	run handedness always
+	run set_handedness always
+
+define sketchpad end_exp
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="これですべて終了です。お疲れ様でした。" x=0 y=0 z_index=0
+	draw textline center=1 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="（何かキーを押してください）" x=0 y=320 z_index=0
+
+define sequence experiment
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run demographic always
+	run intro_general1 always
+	run intro_general2 always
+	run seq_prac always
+	run seq_main always
+
+define sketchpad fb_correct
+	set duration 500
+	set description 視覚刺激の呈示
+	draw textline center=1 color="#0000ff" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="正しいキーです！" x=0 y=0 z_index=0
+
+define sketchpad fb_incorrect
+	set duration 500
+	set description 視覚刺激の呈示
+	draw textline center=1 color=red font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="間違ったキーです！" x=0 y=0 z_index=0
+
+define feedback feedback_main
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=64 html=yes show_if=always text=本試行の結果 x=0 y=-320 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="平均反応時間: [avg_rt] ms." x=0 y=-96 z_index=0
+	draw textline center=0 color="#000000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="結果を確認したら、何かキーを押してください。" x=-320 y=288 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="正答率: [acc] %" x=-96 y=0 z_index=0
+	draw textline center=0 color="#000000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="メモをとる必要はありません。" x=-160 y=160 z_index=0
+
+define feedback feedback_practice
+	set reset_variables yes
+	set duration keypress
+	set description "Provides feedback to the participant"
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=64 html=yes show_if=always text=練習試行の結果 x=0 y=-288 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="平均反応時間: [avg_rt] ms." x=-320 y=-96 z_index=0
+	draw textline center=1 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="結果を確認したら、何かキーを押してください。" x=0 y=288 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="正答率: [acc]  %" x=-320 y=0 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=20 html=yes show_if=always text="メモをとる必要はありません。" x=-128 y=160 z_index=0
+
+define sketchpad fixation
+	set duration 500
+	set description "Displays stimuli"
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=64 html=yes show_if=always text="+" x=0 y=-15 z_index=0
+
+define keyboard_response gender
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description キーボード応答を取得
+	set allowed_responses "m;f;l"
+
+define sketchpad gender_q
+	set duration 0
+	set description 視覚刺激の呈示
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="性別をお尋ねします。" x=0 y=-224 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="男性なら M" x=0 y=-130 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="女性なら F" x=0 y=-80 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="それ以外なら L" x=0 y=-30 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="のキーを押してください。" x=0 y=40 z_index=0
+
+define inline_script get_valid_RT
+	set description "Executes Python code"
+	___run__
+	tmp_rt = self.get('response_time')
+	tmp_correct = self.get('correct')
+	rt_correct = ''
+	if tmp_correct == 1:
+		rt_correct = tmp_rt
+	exp.set('valid_RT',rt_correct)
+	__end__
+	set _prepare ""
+
+define keyboard_response handedness
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description キーボード応答を取得
+	set allowed_responses "r;l;b"
+
+define sketchpad handedness_q
+	set duration 0
+	set description 視覚刺激の呈示
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="利き手をお尋ねします。" x=0 y=-224 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="右手なら R" x=0 y=-130 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="左手なら L" x=0 y=-80 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="両利きなら B" x=0 y=-30 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=36 html=yes show_if=always text="のキーを押してください。" x=0 y=40 z_index=0
+
+define sketchpad intro_general1
+	set start_response_interval no
+	set show_cusor no
+	set reset_variables no
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="この実験では，" x=-128 y=-256 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=22 html=yes show_if=always text="1) 毎回，まず最初に画面中央に ＋（注視点と言います）が" x=-448 y=-224 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=22 html=yes show_if=always text="2) その後しばらくするとその左右どちらかの方向に「右」，または「左」という語が表示されます。" x=-448 y=-190 z_index=0
+	draw textline center=0 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="（読み終えたら何かキーを押してください）" x=-224 y=352 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="3) + に注目し続けたまま、画面に語が表示されたら" x=-448 y=160 z_index=0
+	draw textline center=0 color=green font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="「右」の場合は K のキー" x=-384 y=240 z_index=0
+	draw textline center=1 color="#550000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=20 html=yes show_if=always text=マウスカーソルを邪魔にならないよう画面の右上または左上の端に移動してください x=0 y=-352 z_index=0
+	draw textline center=1 color="#550000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=20 html=yes show_if=always text="これ以後、実験ではマウスを使いません。" x=0 y=-320 z_index=0
+	draw textline center=0 color=red font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="「左」の場合は S のキー" x=-384 y=210 z_index=0
+	draw textline center=0 color=black font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="を押してください。" x=-416 y=288 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=0 y=-10 z_index=0
+	draw rect color=black fill=0 h=260 penwidth=1 show_if=always w=400 x=-200 y=-130 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=右 x=100 y=0 z_index=0
+
+define sketchpad intro_general2
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=0 color="#00007f" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="「右」「左」の語出現した時に素早くかつ正確にキーを押してください。" x=-448 y=224 z_index=0
+	draw textline center=0 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="以上の説明を十分に理解したら，何かキーを押して実験を開始してください。" x=-448 y=320 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="まず最初に練習を行います。" x=-448 y=352 z_index=0
+	draw textline center=0 color="#00007f" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="なお実験中は画面中央を見続けてください。また，S，K 以外のキーは無視されます。" x=-448 y=256 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="4) 語がどちらに出たかではなく， 語の意味で判断してください。" x=-480 y=-352 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="「右」なので K" x=380 y=-192 z_index=0
+	draw arrow arrow_body_length=0.8 arrow_body_width=0.5 arrow_head_width=30 color=green fill=1 penwidth=1 show_if=always x1=384 x2=384 y1=-96 y2=-160 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=28 html=yes show_if=always text="「左」なので S" x=380 y=64 z_index=0
+	draw arrow arrow_body_length=0.8 arrow_body_width=0.5 arrow_head_width=30 color="#fc0107" fill=1 penwidth=1 show_if=always x1=384 x2=384 y1=-32 y2=32 z_index=0
+	draw line color="#000000" penwidth=2 show_if=always x1=-416 x2=448 y1=-64 y2=-64 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=0 y=-250 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=右 x=100 y=-240 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=0 y=-150 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=右 x=-100 y=-140 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=0 y=-10 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=左 x=-100 y=0 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=0 y=100 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=左 x=100 y=110 z_index=0
+
+define sketchpad intro_main
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="それでは、本番（本試行）を開始します。" x=0 y=-288 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="本試行は、開始後全実験が終了するまで途中で中断することはできません。" x=-480 y=-224 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="" x=-32 y=64 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="" x=-32 y=64 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="実験について疑問がある場合は今のうちに解決してください。" x=-480 y=-160 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="また、休憩が必要な場合は今のうちにとっておいてください。" x=-480 y=-96 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="本試行の所要時間は、人によりますが、５～１０分程度です。" x=-480 y=-32 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="繰り返しになりますが、 語が画面に現れてから素早く S または K のキーを押してください （出現前にキーを押しても無効です）。" x=-480 y=32 z_index=0
+	draw textline center=1 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="準備ができたら何かキーを押して実験を開始してください。" x=32 y=288 z_index=0
+	draw textline center=0 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="視線は画面中央の　+　に合わせてください。" x=-480 y=128 z_index=0
+
+define sketchpad intro_prac
+	set duration keypress
+	set description "Displays stimuli"
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="それでは、まず最初に練習を行います。" x=-192 y=-352 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="「語」が表示されたら，「右」の時はK，「左」の時は S を押してください。" x=32 y=-288 z_index=0
+	draw textline center=1 color="#aa0000" font_bold=yes font_family="chinese-japanese-korean" font_italic=no font_size=32 html=yes show_if=always text="準備ができたら、何かキーを押して練習を始めてください。" x=32 y=320 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=K x=128 y=-70 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=S x=128 y=120 z_index=0
+	draw arrow arrow_body_length=0.45 arrow_body_width=0.55 arrow_head_width=30 color="#0000ff" fill=1 penwidth=1 show_if=always x1=32 x2=96 y1=-64 y2=-64 z_index=0
+	draw arrow arrow_body_length=0.45 arrow_body_width=0.55 arrow_head_width=30 color="#0000ff" fill=1 penwidth=1 show_if=always x1=32 x2=96 y1=128 y2=128 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="視線は画面中央の+に合わせてください。また，予め，左手の人差し指をS，右手の人差し指をKのキーの上に置いてください。" x=32 y=-224 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=24 html=yes show_if=always text="なお，キーを押した後，正しいキーが押されたかどうかが表示されます。" x=-32 y=256 z_index=0
+	draw line color=black penwidth=1 show_if=always x1=-480 x2=288 y1=15 y2=15 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=-250 y=-150 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=右 x=-150 y=-140 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=-250 y=-60 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=右 x=-350 y=-50 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=-250 y=40 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=左 x=-350 y=50 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text="+" x=-250 y=120 z_index=0
+	draw textline center=1 color="#000000" font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=48 html=yes show_if=always text=左 x=-150 y=130 z_index=0
+
+define keyboard_response key_response_trial
+	set timeout infinite
+	set flush yes
+	set event_type keypress
+	set duration keypress
+	set description "Collects keyboard responses"
+	set allowed_responses "s;k"
+
+define logger logger
+	set description 実験データをログファイルに書き出します
+	set auto_log no
+	log congruency
+	log correct
+	log correct_response
+	log cue_pos
+	log response
+	log response_time
+	log stim_id
+	log subject_nr
+	log valid_RT
+	log acc
+	log target
+	log gender
+	log handedness
+
+define loop loop_main
+	set source_file ""
+	set source table
+	set repeat 1
+	set order random
+	set description 他のアイテムを繰り返し実行
+	set cycles 96
+	set continuous no
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 congruency con
+	setcycle 0 cue_pos -200
+	setcycle 0 target 左
+	setcycle 0 correct_response s
+	setcycle 0 key_pos left
+	setcycle 0 stim_id con_l_1
+	setcycle 1 congruency con
+	setcycle 1 cue_pos 200
+	setcycle 1 target 右
+	setcycle 1 correct_response k
+	setcycle 1 key_pos right
+	setcycle 1 stim_id con_r_1
+	setcycle 2 congruency incon
+	setcycle 2 cue_pos 200
+	setcycle 2 target 左
+	setcycle 2 correct_response s
+	setcycle 2 key_pos left
+	setcycle 2 stim_id incon_r_1
+	setcycle 3 congruency incon
+	setcycle 3 cue_pos -200
+	setcycle 3 target 右
+	setcycle 3 correct_response k
+	setcycle 3 key_pos right
+	setcycle 3 stim_id incon_l_1
+	setcycle 4 congruency con
+	setcycle 4 cue_pos -200
+	setcycle 4 target 左
+	setcycle 4 correct_response s
+	setcycle 4 key_pos left
+	setcycle 4 stim_id con_l_2
+	setcycle 5 congruency con
+	setcycle 5 cue_pos 200
+	setcycle 5 target 右
+	setcycle 5 correct_response k
+	setcycle 5 key_pos right
+	setcycle 5 stim_id con_r_2
+	setcycle 6 congruency incon
+	setcycle 6 cue_pos 200
+	setcycle 6 target 左
+	setcycle 6 correct_response s
+	setcycle 6 key_pos left
+	setcycle 6 stim_id incon_r_2
+	setcycle 7 congruency incon
+	setcycle 7 cue_pos -200
+	setcycle 7 target 右
+	setcycle 7 correct_response k
+	setcycle 7 key_pos right
+	setcycle 7 stim_id incon_l_2
+	setcycle 8 congruency con
+	setcycle 8 cue_pos -200
+	setcycle 8 target 左
+	setcycle 8 correct_response s
+	setcycle 8 key_pos left
+	setcycle 8 stim_id con_l_3
+	setcycle 9 congruency con
+	setcycle 9 cue_pos 200
+	setcycle 9 target 右
+	setcycle 9 correct_response k
+	setcycle 9 key_pos right
+	setcycle 9 stim_id con_r_3
+	setcycle 10 congruency incon
+	setcycle 10 cue_pos 200
+	setcycle 10 target 左
+	setcycle 10 correct_response s
+	setcycle 10 key_pos left
+	setcycle 10 stim_id incon_r_3
+	setcycle 11 congruency incon
+	setcycle 11 cue_pos -200
+	setcycle 11 target 右
+	setcycle 11 correct_response k
+	setcycle 11 key_pos right
+	setcycle 11 stim_id incon_l_3
+	setcycle 12 congruency con
+	setcycle 12 cue_pos -200
+	setcycle 12 target 左
+	setcycle 12 correct_response s
+	setcycle 12 key_pos left
+	setcycle 12 stim_id con_l_4
+	setcycle 13 congruency con
+	setcycle 13 cue_pos 200
+	setcycle 13 target 右
+	setcycle 13 correct_response k
+	setcycle 13 key_pos right
+	setcycle 13 stim_id con_r_4
+	setcycle 14 congruency incon
+	setcycle 14 cue_pos 200
+	setcycle 14 target 左
+	setcycle 14 correct_response s
+	setcycle 14 key_pos left
+	setcycle 14 stim_id incon_r_4
+	setcycle 15 congruency incon
+	setcycle 15 cue_pos -200
+	setcycle 15 target 右
+	setcycle 15 correct_response k
+	setcycle 15 key_pos right
+	setcycle 15 stim_id incon_l_4
+	setcycle 16 congruency con
+	setcycle 16 cue_pos -200
+	setcycle 16 target 左
+	setcycle 16 correct_response s
+	setcycle 16 key_pos left
+	setcycle 16 stim_id con_l_5
+	setcycle 17 congruency con
+	setcycle 17 cue_pos 200
+	setcycle 17 target 右
+	setcycle 17 correct_response k
+	setcycle 17 key_pos right
+	setcycle 17 stim_id con_r_5
+	setcycle 18 congruency incon
+	setcycle 18 cue_pos 200
+	setcycle 18 target 左
+	setcycle 18 correct_response s
+	setcycle 18 key_pos left
+	setcycle 18 stim_id incon_r_5
+	setcycle 19 congruency incon
+	setcycle 19 cue_pos -200
+	setcycle 19 target 右
+	setcycle 19 correct_response k
+	setcycle 19 key_pos right
+	setcycle 19 stim_id incon_l_5
+	setcycle 20 congruency con
+	setcycle 20 cue_pos -200
+	setcycle 20 target 左
+	setcycle 20 correct_response s
+	setcycle 20 key_pos left
+	setcycle 20 stim_id con_l_6
+	setcycle 21 congruency con
+	setcycle 21 cue_pos 200
+	setcycle 21 target 右
+	setcycle 21 correct_response k
+	setcycle 21 key_pos right
+	setcycle 21 stim_id con_r_6
+	setcycle 22 congruency incon
+	setcycle 22 cue_pos 200
+	setcycle 22 target 左
+	setcycle 22 correct_response s
+	setcycle 22 key_pos left
+	setcycle 22 stim_id incon_r_6
+	setcycle 23 congruency incon
+	setcycle 23 cue_pos -200
+	setcycle 23 target 右
+	setcycle 23 correct_response k
+	setcycle 23 key_pos right
+	setcycle 23 stim_id incon_l_6
+	setcycle 24 congruency con
+	setcycle 24 cue_pos -200
+	setcycle 24 target 左
+	setcycle 24 correct_response s
+	setcycle 24 key_pos left
+	setcycle 24 stim_id con_l_7
+	setcycle 25 congruency con
+	setcycle 25 cue_pos 200
+	setcycle 25 target 右
+	setcycle 25 correct_response k
+	setcycle 25 key_pos right
+	setcycle 25 stim_id con_r_7
+	setcycle 26 congruency incon
+	setcycle 26 cue_pos 200
+	setcycle 26 target 左
+	setcycle 26 correct_response s
+	setcycle 26 key_pos left
+	setcycle 26 stim_id incon_r_7
+	setcycle 27 congruency incon
+	setcycle 27 cue_pos -200
+	setcycle 27 target 右
+	setcycle 27 correct_response k
+	setcycle 27 key_pos right
+	setcycle 27 stim_id incon_l_7
+	setcycle 28 congruency con
+	setcycle 28 cue_pos -200
+	setcycle 28 target 左
+	setcycle 28 correct_response s
+	setcycle 28 key_pos left
+	setcycle 28 stim_id con_l_8
+	setcycle 29 congruency con
+	setcycle 29 cue_pos 200
+	setcycle 29 target 右
+	setcycle 29 correct_response k
+	setcycle 29 key_pos right
+	setcycle 29 stim_id con_r_8
+	setcycle 30 congruency incon
+	setcycle 30 cue_pos 200
+	setcycle 30 target 左
+	setcycle 30 correct_response s
+	setcycle 30 key_pos left
+	setcycle 30 stim_id incon_r_8
+	setcycle 31 congruency incon
+	setcycle 31 cue_pos -200
+	setcycle 31 target 右
+	setcycle 31 correct_response k
+	setcycle 31 key_pos right
+	setcycle 31 stim_id incon_l_8
+	setcycle 32 congruency con
+	setcycle 32 cue_pos -200
+	setcycle 32 target 左
+	setcycle 32 correct_response s
+	setcycle 32 key_pos left
+	setcycle 32 stim_id con_l_9
+	setcycle 33 congruency con
+	setcycle 33 cue_pos 200
+	setcycle 33 target 右
+	setcycle 33 correct_response k
+	setcycle 33 key_pos right
+	setcycle 33 stim_id con_r_9
+	setcycle 34 congruency incon
+	setcycle 34 cue_pos 200
+	setcycle 34 target 左
+	setcycle 34 correct_response s
+	setcycle 34 key_pos left
+	setcycle 34 stim_id incon_r_9
+	setcycle 35 congruency incon
+	setcycle 35 cue_pos -200
+	setcycle 35 target 右
+	setcycle 35 correct_response k
+	setcycle 35 key_pos right
+	setcycle 35 stim_id incon_l_9
+	setcycle 36 congruency con
+	setcycle 36 cue_pos -200
+	setcycle 36 target 左
+	setcycle 36 correct_response s
+	setcycle 36 key_pos left
+	setcycle 36 stim_id con_l_10
+	setcycle 37 congruency con
+	setcycle 37 cue_pos 200
+	setcycle 37 target 右
+	setcycle 37 correct_response k
+	setcycle 37 key_pos right
+	setcycle 37 stim_id con_r_10
+	setcycle 38 congruency incon
+	setcycle 38 cue_pos 200
+	setcycle 38 target 左
+	setcycle 38 correct_response s
+	setcycle 38 key_pos left
+	setcycle 38 stim_id incon_r_10
+	setcycle 39 congruency incon
+	setcycle 39 cue_pos -200
+	setcycle 39 target 右
+	setcycle 39 correct_response k
+	setcycle 39 key_pos right
+	setcycle 39 stim_id incon_l_10
+	setcycle 40 congruency con
+	setcycle 40 cue_pos -200
+	setcycle 40 target 左
+	setcycle 40 correct_response s
+	setcycle 40 key_pos left
+	setcycle 40 stim_id con_l_11
+	setcycle 41 congruency con
+	setcycle 41 cue_pos 200
+	setcycle 41 target 右
+	setcycle 41 correct_response k
+	setcycle 41 key_pos right
+	setcycle 41 stim_id con_r_11
+	setcycle 42 congruency incon
+	setcycle 42 cue_pos 200
+	setcycle 42 target 左
+	setcycle 42 correct_response s
+	setcycle 42 key_pos left
+	setcycle 42 stim_id incon_r_11
+	setcycle 43 congruency incon
+	setcycle 43 cue_pos -200
+	setcycle 43 target 右
+	setcycle 43 correct_response k
+	setcycle 43 key_pos right
+	setcycle 43 stim_id incon_l_11
+	setcycle 44 congruency con
+	setcycle 44 cue_pos -200
+	setcycle 44 target 左
+	setcycle 44 correct_response s
+	setcycle 44 key_pos left
+	setcycle 44 stim_id con_l_12
+	setcycle 45 congruency con
+	setcycle 45 cue_pos 200
+	setcycle 45 target 右
+	setcycle 45 correct_response k
+	setcycle 45 key_pos right
+	setcycle 45 stim_id con_r_12
+	setcycle 46 congruency incon
+	setcycle 46 cue_pos 200
+	setcycle 46 target 左
+	setcycle 46 correct_response s
+	setcycle 46 key_pos left
+	setcycle 46 stim_id incon_r_12
+	setcycle 47 congruency incon
+	setcycle 47 cue_pos -200
+	setcycle 47 target 右
+	setcycle 47 correct_response k
+	setcycle 47 key_pos right
+	setcycle 47 stim_id incon_l_12
+	setcycle 48 congruency con
+	setcycle 48 cue_pos -200
+	setcycle 48 target 左
+	setcycle 48 correct_response s
+	setcycle 48 key_pos left
+	setcycle 48 stim_id con_l_13
+	setcycle 49 congruency con
+	setcycle 49 cue_pos 200
+	setcycle 49 target 右
+	setcycle 49 correct_response k
+	setcycle 49 key_pos right
+	setcycle 49 stim_id con_r_13
+	setcycle 50 congruency incon
+	setcycle 50 cue_pos 200
+	setcycle 50 target 左
+	setcycle 50 correct_response s
+	setcycle 50 key_pos left
+	setcycle 50 stim_id incon_r_13
+	setcycle 51 congruency incon
+	setcycle 51 cue_pos -200
+	setcycle 51 target 右
+	setcycle 51 correct_response k
+	setcycle 51 key_pos right
+	setcycle 51 stim_id incon_l_13
+	setcycle 52 congruency con
+	setcycle 52 cue_pos -200
+	setcycle 52 target 左
+	setcycle 52 correct_response s
+	setcycle 52 key_pos left
+	setcycle 52 stim_id con_l_14
+	setcycle 53 congruency con
+	setcycle 53 cue_pos 200
+	setcycle 53 target 右
+	setcycle 53 correct_response k
+	setcycle 53 key_pos right
+	setcycle 53 stim_id con_r_14
+	setcycle 54 congruency incon
+	setcycle 54 cue_pos 200
+	setcycle 54 target 左
+	setcycle 54 correct_response s
+	setcycle 54 key_pos left
+	setcycle 54 stim_id incon_r_14
+	setcycle 55 congruency incon
+	setcycle 55 cue_pos -200
+	setcycle 55 target 右
+	setcycle 55 correct_response k
+	setcycle 55 key_pos right
+	setcycle 55 stim_id incon_l_14
+	setcycle 56 congruency con
+	setcycle 56 cue_pos -200
+	setcycle 56 target 左
+	setcycle 56 correct_response s
+	setcycle 56 key_pos left
+	setcycle 56 stim_id con_l_15
+	setcycle 57 congruency con
+	setcycle 57 cue_pos 200
+	setcycle 57 target 右
+	setcycle 57 correct_response k
+	setcycle 57 key_pos right
+	setcycle 57 stim_id con_r_15
+	setcycle 58 congruency incon
+	setcycle 58 cue_pos 200
+	setcycle 58 target 左
+	setcycle 58 correct_response s
+	setcycle 58 key_pos left
+	setcycle 58 stim_id incon_r_15
+	setcycle 59 congruency incon
+	setcycle 59 cue_pos -200
+	setcycle 59 target 右
+	setcycle 59 correct_response k
+	setcycle 59 key_pos right
+	setcycle 59 stim_id incon_l_15
+	setcycle 60 congruency con
+	setcycle 60 cue_pos -200
+	setcycle 60 target 左
+	setcycle 60 correct_response s
+	setcycle 60 key_pos left
+	setcycle 60 stim_id con_l_16
+	setcycle 61 congruency con
+	setcycle 61 cue_pos 200
+	setcycle 61 target 右
+	setcycle 61 correct_response k
+	setcycle 61 key_pos right
+	setcycle 61 stim_id con_r_16
+	setcycle 62 congruency incon
+	setcycle 62 cue_pos 200
+	setcycle 62 target 左
+	setcycle 62 correct_response s
+	setcycle 62 key_pos left
+	setcycle 62 stim_id incon_r_16
+	setcycle 63 congruency incon
+	setcycle 63 cue_pos -200
+	setcycle 63 target 右
+	setcycle 63 correct_response k
+	setcycle 63 key_pos right
+	setcycle 63 stim_id incon_l_16
+	setcycle 64 congruency con
+	setcycle 64 cue_pos -200
+	setcycle 64 target 左
+	setcycle 64 correct_response s
+	setcycle 64 key_pos left
+	setcycle 64 stim_id con_l_17
+	setcycle 65 congruency con
+	setcycle 65 cue_pos 200
+	setcycle 65 target 右
+	setcycle 65 correct_response k
+	setcycle 65 key_pos right
+	setcycle 65 stim_id con_r_17
+	setcycle 66 congruency incon
+	setcycle 66 cue_pos 200
+	setcycle 66 target 左
+	setcycle 66 correct_response s
+	setcycle 66 key_pos left
+	setcycle 66 stim_id incon_r_17
+	setcycle 67 congruency incon
+	setcycle 67 cue_pos -200
+	setcycle 67 target 右
+	setcycle 67 correct_response k
+	setcycle 67 key_pos right
+	setcycle 67 stim_id incon_l_17
+	setcycle 68 congruency con
+	setcycle 68 cue_pos -200
+	setcycle 68 target 左
+	setcycle 68 correct_response s
+	setcycle 68 key_pos left
+	setcycle 68 stim_id con_l_18
+	setcycle 69 congruency con
+	setcycle 69 cue_pos 200
+	setcycle 69 target 右
+	setcycle 69 correct_response k
+	setcycle 69 key_pos right
+	setcycle 69 stim_id con_r_18
+	setcycle 70 congruency incon
+	setcycle 70 cue_pos 200
+	setcycle 70 target 左
+	setcycle 70 correct_response s
+	setcycle 70 key_pos left
+	setcycle 70 stim_id incon_r_18
+	setcycle 71 congruency incon
+	setcycle 71 cue_pos -200
+	setcycle 71 target 右
+	setcycle 71 correct_response k
+	setcycle 71 key_pos right
+	setcycle 71 stim_id incon_l_18
+	setcycle 72 congruency con
+	setcycle 72 cue_pos -200
+	setcycle 72 target 左
+	setcycle 72 correct_response s
+	setcycle 72 key_pos left
+	setcycle 72 stim_id con_l_19
+	setcycle 73 congruency con
+	setcycle 73 cue_pos 200
+	setcycle 73 target 右
+	setcycle 73 correct_response k
+	setcycle 73 key_pos right
+	setcycle 73 stim_id con_r_19
+	setcycle 74 congruency incon
+	setcycle 74 cue_pos 200
+	setcycle 74 target 左
+	setcycle 74 correct_response s
+	setcycle 74 key_pos left
+	setcycle 74 stim_id incon_r_19
+	setcycle 75 congruency incon
+	setcycle 75 cue_pos -200
+	setcycle 75 target 右
+	setcycle 75 correct_response k
+	setcycle 75 key_pos right
+	setcycle 75 stim_id incon_l_19
+	setcycle 76 congruency con
+	setcycle 76 cue_pos -200
+	setcycle 76 target 左
+	setcycle 76 correct_response s
+	setcycle 76 key_pos left
+	setcycle 76 stim_id con_l_20
+	setcycle 77 congruency con
+	setcycle 77 cue_pos 200
+	setcycle 77 target 右
+	setcycle 77 correct_response k
+	setcycle 77 key_pos right
+	setcycle 77 stim_id con_r_20
+	setcycle 78 congruency incon
+	setcycle 78 cue_pos 200
+	setcycle 78 target 左
+	setcycle 78 correct_response s
+	setcycle 78 key_pos left
+	setcycle 78 stim_id incon_r_20
+	setcycle 79 congruency incon
+	setcycle 79 cue_pos -200
+	setcycle 79 target 右
+	setcycle 79 correct_response k
+	setcycle 79 key_pos right
+	setcycle 79 stim_id incon_l_20
+	setcycle 80 congruency con
+	setcycle 80 cue_pos -200
+	setcycle 80 target 左
+	setcycle 80 correct_response s
+	setcycle 80 key_pos left
+	setcycle 80 stim_id con_l_21
+	setcycle 81 congruency con
+	setcycle 81 cue_pos 200
+	setcycle 81 target 右
+	setcycle 81 correct_response k
+	setcycle 81 key_pos right
+	setcycle 81 stim_id con_r_21
+	setcycle 82 congruency incon
+	setcycle 82 cue_pos 200
+	setcycle 82 target 左
+	setcycle 82 correct_response s
+	setcycle 82 key_pos left
+	setcycle 82 stim_id incon_r_21
+	setcycle 83 congruency incon
+	setcycle 83 cue_pos -200
+	setcycle 83 target 右
+	setcycle 83 correct_response k
+	setcycle 83 key_pos right
+	setcycle 83 stim_id incon_l_21
+	setcycle 84 congruency con
+	setcycle 84 cue_pos -200
+	setcycle 84 target 左
+	setcycle 84 correct_response s
+	setcycle 84 key_pos left
+	setcycle 84 stim_id con_l_22
+	setcycle 85 congruency con
+	setcycle 85 cue_pos 200
+	setcycle 85 target 右
+	setcycle 85 correct_response k
+	setcycle 85 key_pos right
+	setcycle 85 stim_id con_r_22
+	setcycle 86 congruency incon
+	setcycle 86 cue_pos 200
+	setcycle 86 target 左
+	setcycle 86 correct_response s
+	setcycle 86 key_pos left
+	setcycle 86 stim_id incon_r_22
+	setcycle 87 congruency incon
+	setcycle 87 cue_pos -200
+	setcycle 87 target 右
+	setcycle 87 correct_response k
+	setcycle 87 key_pos right
+	setcycle 87 stim_id incon_l_22
+	setcycle 88 congruency con
+	setcycle 88 cue_pos -200
+	setcycle 88 target 左
+	setcycle 88 correct_response s
+	setcycle 88 key_pos left
+	setcycle 88 stim_id con_l_23
+	setcycle 89 congruency con
+	setcycle 89 cue_pos 200
+	setcycle 89 target 右
+	setcycle 89 correct_response k
+	setcycle 89 key_pos right
+	setcycle 89 stim_id con_r_23
+	setcycle 90 congruency incon
+	setcycle 90 cue_pos 200
+	setcycle 90 target 左
+	setcycle 90 correct_response s
+	setcycle 90 key_pos left
+	setcycle 90 stim_id incon_r_23
+	setcycle 91 congruency incon
+	setcycle 91 cue_pos -200
+	setcycle 91 target 右
+	setcycle 91 correct_response k
+	setcycle 91 key_pos right
+	setcycle 91 stim_id incon_l_23
+	setcycle 92 congruency con
+	setcycle 92 cue_pos -200
+	setcycle 92 target 左
+	setcycle 92 correct_response s
+	setcycle 92 key_pos left
+	setcycle 92 stim_id con_l_24
+	setcycle 93 congruency con
+	setcycle 93 cue_pos 200
+	setcycle 93 target 右
+	setcycle 93 correct_response k
+	setcycle 93 key_pos right
+	setcycle 93 stim_id con_r_24
+	setcycle 94 congruency incon
+	setcycle 94 cue_pos 200
+	setcycle 94 target 左
+	setcycle 94 correct_response s
+	setcycle 94 key_pos left
+	setcycle 94 stim_id incon_r_24
+	setcycle 95 congruency incon
+	setcycle 95 cue_pos -200
+	setcycle 95 target 右
+	setcycle 95 correct_response k
+	setcycle 95 key_pos right
+	setcycle 95 stim_id incon_l_24
+	run main_seq
+
+define loop loop_practice
+	set source table
+	set skip 0
+	set repeat 4
+	set order random
+	set offset no
+	set item practice_trial
+	set description "Repeatedly runs another item"
+	set cycles 4
+	set continuous no
+	set column_order "SOA;file_tgt;cue_pos;ISI;congruency;file_cue;target_pos"
+	set break_if_on_first yes
+	set break_if never
+	setcycle 0 congruency con
+	setcycle 0 cue_pos -200
+	setcycle 0 target 左
+	setcycle 0 correct_response s
+	setcycle 0 key_pos left
+	setcycle 1 congruency con
+	setcycle 1 cue_pos 200
+	setcycle 1 target 右
+	setcycle 1 correct_response k
+	setcycle 1 key_pos right
+	setcycle 2 congruency incon
+	setcycle 2 cue_pos 200
+	setcycle 2 target 左
+	setcycle 2 correct_response s
+	setcycle 2 key_pos left
+	setcycle 3 congruency incon
+	setcycle 3 cue_pos -200
+	setcycle 3 target 右
+	setcycle 3 correct_response k
+	setcycle 3 key_pos right
+	run practice_seq
+
+define sequence main_seq
+	set flush_keyboard yes
+	set description アイテムをシーケンスで実行
+	run blank always
+	run fixation always
+	run target always
+	run key_response_trial always
+	run get_valid_RT always
+	run logger always
+	run fb_correct "[correct] = 1"
+	run fb_incorrect "[correct] = 0"
+
+define sequence practice_seq
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run blank always
+	run fixation always
+	run target always
+	run key_response_trial always
+	run fb_correct "[correct] = 1"
+	run fb_incorrect "[correct] = 0"
+
+define reset_feedback reset_feedback
+	set description "Resets the feedback variables, such as 'avg_rt' and 'acc'"
+
+define sequence seq_main
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run reset_feedback always
+	run intro_main always
+	run loop_main always
+	run feedback_main always
+	run end_exp always
+
+define sequence seq_prac
+	set flush_keyboard yes
+	set description "Runs a number of items in sequence"
+	run reset_feedback always
+	run intro_prac always
+	run loop_practice always
+	run feedback_practice always
+
+define inline_script set_gender
+	set description "Executes Python code"
+	___run__
+	resp_key = self.get('response')
+	tmp_gender = ''
+	if resp_key == 'm':
+		tmp_gender = 1
+	elif resp_key == 'f':
+		tmp_gender = 2
+	elif resp_key == 'l':
+		tmp_gender = 3
+	else:
+		tmp_gender = 0
+	exp.set('gender',tmp_gender)
+	__end__
+	set _prepare ""
+
+define inline_script set_handedness
+	set description "Executes Python code"
+	___run__
+	resp_key = self.get('response')
+	tmp_handedness = ''
+	if resp_key == 'r':
+		tmp_handedness = 1
+	elif resp_key == 'l':
+		tmp_handedness = 2
+	elif resp_key == 'b':
+		tmp_handedness = 3
+	else:
+		tmp_handedness = 0
+	exp.set('handedness',tmp_handedness)
+	__end__
+	set _prepare ""
+
+define sketchpad target
+	set duration 0
+	set description "Displays stimuli"
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=64 html=yes show_if=always text="+" x=0 y=-15 z_index=0
+	draw textline center=1 color=black font_bold=no font_family="chinese-japanese-korean" font_italic=no font_size=64 html=yes show_if=always text="[target]" x="[cue_pos]" y=0 z_index=0
+
